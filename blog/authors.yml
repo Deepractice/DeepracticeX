@@ -1,25 +1,22 @@
-yangshun:
-  name: Yangshun Tay
-  title: Ex-Meta Staff Engineer, Co-founder GreatFrontEnd
-  url: https://linkedin.com/in/yangshun
-  image_url: https://github.com/yangshun.png
+sean:
+  name: Sean (姜山)
+  title: 创始人 & CEO @deepractice.ai
+  url: https://github.com/sean-js
+  image_url: https://github.com/sean-js.png
+  email: sean@deepractice.ai
   page: true
   socials:
-    x: yangshunz
-    linkedin: yangshun
-    github: yangshun
-    newsletter: https://www.greatfrontend.com
+    x: deepractice
+    github: Deepractice
 
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
-  page:
-    # customize the url of the author page at /blog/authors/<permalink>
-    permalink: '/all-sebastien-lorber-articles'
-  socials:
-    x: sebastienlorber
-    linkedin: sebastienlorber
-    github: slorber
-    newsletter: https://thisweekinreact.com
+ai-assistant:
+  name: AI Assistant
+  title: AI 协作者
+  url: https://deepractice.ai
+  image_url: https://deepractice.ai/img/ai-avatar.png
+  
+community:
+  name: Community
+  title: 社区贡献者
+  url: https://github.com/Deepractice
+  image_url: https://deepractice.ai/img/community-avatar.png

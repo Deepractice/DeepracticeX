@@ -1,0 +1,114 @@
+.blogPostCard {
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.blogPostCard:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.cardLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cardLink:hover {
+  text-decoration: none;
+}
+
+.cardContent {
+  padding: 2rem;
+}
+
+.postTitle {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ifm-heading-color);
+  transition: color 0.2s ease;
+}
+
+.blogPostCard:hover .postTitle {
+  color: var(--ifm-color-primary);
+}
+
+.postMeta {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--ifm-font-color-secondary);
+  margin-bottom: 1rem;
+}
+
+.metaSeparator {
+  margin: 0 0.5rem;
+  opacity: 0.5;
+}
+
+.postDescription {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ifm-font-color-secondary);
+  margin: 0 0 1.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.postFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.postTags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary-lightest);
+  padding: 0.25rem 0.625rem;
+  border-radius: 16px;
+  font-weight: 500;
+}
+
+.readMore {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.blogPostCard:hover .readMore {
+  transform: translateX(4px);
+}
+
+/* 暗色模式 */
+[data-theme='dark'] .blogPostCard {
+  background: #1a1a1a;
+  border-color: #333;
+}
+
+[data-theme='dark'] .blogPostCard:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .tag {
+  background: rgba(37, 194, 160, 0.1);
+  color: var(--ifm-color-primary-light);
+}

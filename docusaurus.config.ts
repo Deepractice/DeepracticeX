@@ -36,6 +36,11 @@ const config: Config = {
     locales: ['zh-CN', 'en'],
   },
 
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
+
   presets: [
     [
       'classic',
@@ -65,6 +70,14 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
+          // 博客列表默认展开全文
+          truncateMarker: /<!--\s*more\s*-->/,
+          blogListComponent: '@theme/BlogListPage',
+          blogPostComponent: '@theme/BlogPostPage',
+          // 侧边栏设置
+          blogSidebarTitle: '最近文章',
+          blogSidebarCount: 10,
+          postsPerPage: 5,
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -173,6 +186,9 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+    },
+    mermaid: {
+      theme: {light: 'neutral', dark: 'dark'},
     },
   } satisfies Preset.ThemeConfig,
 };

@@ -1,0 +1,25 @@
+
+> deepractice-x-temp@0.0.0 start
+> docusaurus start --port 3001
+
+[INFO] Starting the development server...
+[WARNING] Docusaurus found blog posts without truncation markers:
+- "blog/2025-07-25-learning-from-human-cognition.md"
+- "blog/2025-07-22-why-semantics-cannot-be-computed.md"
+- "blog/2025-07-20-why-rag-not-for-ai-memory.md"
+- "blog/2025-06-26-mcp-ecosystem-positioning-dilemma.md"
+- "blog/2025-04-24-cross-cultural-terminology.md"
+- "blog/2025-04-10-ai-memory-fragments.md"
+- "blog/2025-04-08-oes-framework-introduction.md"
+- "blog/2025-04-02-dpml-structured-prompt-markup-language.md"
+- "blog/2025-03-31-agi-path-ai-organization.md"
+- "blog/2025-03-24-4p-theory-ai-engineering.md"
+- "blog/2025-03-23-prompt-design-patterns.md"
+- "blog/2025-03-20-cognitive-prompt-paradigm.md"
+
+We recommend using truncation markers (`<!-- truncate -->` or `{/* truncate */}`) in blog posts to create shorter previews on blog paginated lists.
+Tip: turn this security off with the `onUntruncatedBlogPosts: 'ignore'` blog plugin option.
+[SUCCESS] Docusaurus website is running at: http://localhost:3001/
+[webpackbar] ℹ Compiling Client
+[webpackbar] ✔ Client: Compiled successfully in 9.66s
+client (webpack 5.100.2) compiled successfully

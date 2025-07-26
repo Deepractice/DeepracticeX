@@ -1,19 +1,49 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+深度实践:
+  label: 深度实践
+  permalink: /deepractice
+  description: Deepractice 理论与实践文章
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+AI:
+  label: AI
+  permalink: /ai
+  description: 人工智能相关文章
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
+理论:
+  label: 理论
+  permalink: /theory
+  description: 理论研究文章
 
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+AI理论:
+  label: AI理论
+  permalink: /ai-theory
+  description: 人工智能理论研究相关文章
+  
+语义学:
+  label: 语义学
+  permalink: /semantics
+  description: 语义理解和语义计算相关内容
+  
+认知科学:
+  label: 认知科学
+  permalink: /cognitive-science
+  description: 认知科学与心理学相关研究
+  
+Monogent:
+  label: Monogent
+  permalink: /monogent
+  description: Monogent 框架相关理论和实践
+  
+PromptX:
+  label: PromptX
+  permalink: /promptx
+  description: PromptX 工具和框架相关内容
+  
+技术架构:
+  label: 技术架构
+  permalink: /architecture
+  description: 软件架构设计相关文章
+  
+开发工具:
+  label: 开发工具
+  permalink: /dev-tools
+  description: 开发工具和效率提升
