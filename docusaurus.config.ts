@@ -46,6 +46,10 @@ const config: Config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/Deepractice/DeepracticeX/tree/main/',
+          // 路由配置
+          routeBasePath: 'docs',
+          // 面包屑导航
+          breadcrumbs: true,
         },
         blog: {
           showReadingTime: true,
@@ -80,14 +84,28 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          to: '/',
+          label: '首页',
           position: 'left',
-          label: '文档',
+          activeBaseRegex: '^/$',
         },
-        {to: '/blog', label: '博客', position: 'left'},
-        {to: '/docs/research', label: '研究', position: 'left'},
-        {to: '/docs/community', label: '社区', position: 'left'},
+        {
+          to: '/blog', 
+          label: '博客', 
+          position: 'left'
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'productSidebar',
+          position: 'left',
+          label: '产品',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'communitySidebar',
+          position: 'left',
+          label: '社区',
+        },
         {
           href: 'https://github.com/Deepractice/DeepracticeX',
           label: 'GitHub',
