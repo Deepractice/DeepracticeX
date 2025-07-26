@@ -1,0 +1,10 @@
+{
+  "label": "社区",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "title": "DeepracticeX 社区",
+    "description": "精彩对话、用户案例、社区贡献",
+    "slug": "/community"
+  }
+}

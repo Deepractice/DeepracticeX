@@ -1,0 +1,10 @@
+{
+  "label": "产品",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "title": "产品文档",
+    "description": "deepractice.ai 的产品生态",
+    "slug": "/products"
+  }
+}
