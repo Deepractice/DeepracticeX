@@ -1,5 +1,5 @@
 Feature: Individual Management
-  https://github.com/Deepractice/DeepracticeX/tree/main/skills/individual-management
+  individual-management:0.1.0
 
   Scenario: When to use this skill
     Given I need to manage individual lifecycle (born, retire, die, rehire)

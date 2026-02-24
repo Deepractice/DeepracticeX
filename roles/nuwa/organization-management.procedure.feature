@@ -1,5 +1,5 @@
 Feature: Organization Management
-  https://github.com/Deepractice/DeepracticeX/tree/main/skills/organization-management
+  organization-management:0.1.0
 
   Scenario: When to use this skill
     Given I need to manage organizations (found, charter, dissolve)
