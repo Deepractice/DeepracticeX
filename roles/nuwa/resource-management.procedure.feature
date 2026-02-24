@@ -1,0 +1,8 @@
+Feature: Resource Management
+  https://github.com/Deepractice/DeepracticeX/tree/main/skills/resource-management
+
+  Scenario: When to use this skill
+    Given I need to manage ResourceX resources or register prototypes
+    And I need to understand resource loading and progressive disclosure
+    When the operation involves resource lifecycle or prototype registration
+    Then load this skill for detailed instructions

@@ -10,6 +10,21 @@
           "type": "background"
         }
       }
+    },
+    "individual-management": {
+      "type": "procedure"
+    },
+    "organization-management": {
+      "type": "procedure"
+    },
+    "position-management": {
+      "type": "procedure"
+    },
+    "resource-management": {
+      "type": "procedure"
+    },
+    "skill-creator": {
+      "type": "procedure"
     }
   }
 }
