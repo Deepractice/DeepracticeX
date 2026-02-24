@@ -1,5 +1,5 @@
 Feature: Prototype Management
-  https://github.com/Deepractice/DeepracticeX/tree/main/skills/prototype-management
+  deepractice/prototype-management
 
   Scenario: When to use this skill
     Given I need to manage prototypes (summon, banish, list)

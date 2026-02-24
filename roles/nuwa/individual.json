@@ -1,15 +1,13 @@
 {
   "id": "nuwa",
   "type": "individual",
-  "alias": ["女娲", "nvwa"],
+  "alias": [
+    "女娲",
+    "nvwa"
+  ],
   "children": {
     "identity": {
-      "type": "identity",
-      "children": {
-        "background": {
-          "type": "background"
-        }
-      }
+      "type": "identity"
     },
     "individual-management": {
       "type": "procedure"
@@ -24,6 +22,9 @@
       "type": "procedure"
     },
     "resource-management": {
+      "type": "procedure"
+    },
+    "prototype-authoring": {
       "type": "procedure"
     },
     "skill-creator": {

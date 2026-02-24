@@ -1,5 +1,5 @@
 Feature: Position Management
-  https://github.com/Deepractice/DeepracticeX/tree/main/skills/position-management
+  deepractice/position-management
 
   Scenario: When to use this skill
     Given I need to manage positions (establish, charge, abolish)
