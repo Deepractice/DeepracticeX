@@ -20,6 +20,9 @@
     "position-management": {
       "type": "procedure"
     },
+    "prototype-management": {
+      "type": "procedure"
+    },
     "resource-management": {
       "type": "procedure"
     },
