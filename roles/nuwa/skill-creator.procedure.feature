@@ -1,5 +1,5 @@
 Feature: Skill Creator
-  deepractice/skill-creator
+  https://github.com/Deepractice/DeepracticeX/tree/main/skills/skill-creator
 
   Scenario: When to use this skill
     Given I need to create a new skill for a role

@@ -1,5 +1,5 @@
 Feature: Resource Management
-  deepractice/resource-management
+  https://github.com/Deepractice/DeepracticeX/tree/main/skills/resource-management
 
   Scenario: When to use this skill
     Given I need to manage ResourceX resources (search, add, remove, push, pull)

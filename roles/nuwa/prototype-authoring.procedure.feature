@@ -1,5 +1,5 @@
 Feature: Prototype Authoring
-  deepractice/prototype-authoring
+  https://github.com/Deepractice/DeepracticeX/tree/main/skills/prototype-authoring
 
   Scenario: When to use this skill
     Given I need to create a new role or organization prototype from scratch
