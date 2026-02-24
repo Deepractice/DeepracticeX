@@ -1,35 +1,24 @@
 ---
 name: individual-management
-description: Manage individual lifecycle and knowledge injection. Use when you need to create, retire, restore, or permanently remove individuals, or when you need to inject principles and procedures into an individual's knowledge.
+description: Manage individual lifecycle and knowledge injection. Use when you need to create, retire, restore, or permanently remove individuals, or when you need to inject principles and procedures into an individual.
 ---
 
 Feature: Individual Lifecycle
   Manage the full lifecycle of individuals in the RoleX world.
-  Individuals are persistent entities that hold identity, knowledge, goals, and experience.
+  All operations are invoked via the use tool with ! prefix.
 
   Scenario: born — create a new individual
     Given you want to bring a new individual into the world
-    When you call born with a persona and an id
+    When you call use with !individual.born
     Then a new individual node is created under society
     And the individual can be activated, hired into organizations, and taught skills
     And parameters are:
       """
-      rolex individual born [OPTIONS]
-
-      OPTIONS:
-        --individual    Gherkin Feature source describing the persona
-        -f, --file      Path to .feature file (alternative to --individual)
-        --id            User-facing identifier (kebab-case, e.g. "sean", "nuwa")
-        --alias         Comma-separated aliases (e.g. "女娲,nvwa")
-      """
-    And example:
-      """
-      rolex individual born --id sean --individual "Feature: Sean
-        A backend architect who builds AI agent frameworks.
-
-        Scenario: Background
-          Given I am a software engineer
-          And I specialize in systems design"
+      use("!individual.born", {
+        content: "Feature: ...",   // Gherkin persona (optional)
+        id: "sean",                // kebab-case identifier
+        alias: ["小明", "xm"]     // aliases (optional)
+      })
       """
 
   Scenario: born — persona writing guidelines
@@ -41,28 +30,22 @@ Feature: Individual Lifecycle
 
   Scenario: retire — archive an individual
     Given an individual should be temporarily deactivated
-    When you call retire with the individual id
+    When you call use with !individual.retire
     Then the individual is moved to the past archive
     And all data is preserved for potential restoration via rehire
     And parameters are:
       """
-      rolex individual retire <INDIVIDUAL>
-
-      ARGUMENTS:
-        INDIVIDUAL    Individual id (required)
+      use("!individual.retire", { individual: "sean" })
       """
 
   Scenario: die — permanently remove an individual
     Given an individual should be permanently removed
-    When you call die with the individual id
+    When you call use with !individual.die
     Then the individual is moved to the past archive
     And this is semantically permanent — rehire is technically possible but not intended
     And parameters are:
       """
-      rolex individual die <INDIVIDUAL>
-
-      ARGUMENTS:
-        INDIVIDUAL    Individual id (required)
+      use("!individual.die", { individual: "sean" })
       """
 
   Scenario: retire vs die — when to use which
@@ -74,15 +57,12 @@ Feature: Individual Lifecycle
 
   Scenario: rehire — restore a retired individual
     Given a retired individual needs to come back
-    When you call rehire with the past node id
+    When you call use with !individual.rehire
     Then the individual is restored to active society
     And all previous knowledge, experience, and history are intact
     And parameters are:
       """
-      rolex individual rehire <PAST_NODE>
-
-      ARGUMENTS:
-        PAST_NODE    Past node id of the retired individual (required)
+      use("!individual.rehire", { individual: "sean" })
       """
 
 Feature: Knowledge Injection
@@ -92,64 +72,31 @@ Feature: Knowledge Injection
 
   Scenario: teach — inject a principle
     Given an individual needs a rule or guideline it hasn't learned through experience
-    When you call teach with the individual id, principle content, and a principle id
+    When you call use with !individual.teach
     Then a principle is created directly under the individual
     And if a principle with the same id already exists, it is replaced (upsert)
     And parameters are:
       """
-      rolex individual teach <INDIVIDUAL> [OPTIONS]
-
-      ARGUMENTS:
-        INDIVIDUAL    Individual id (required)
-
-      OPTIONS:
-        --principle     Gherkin Feature source for the principle
-        -f, --file      Path to .feature file (alternative to --principle)
-        --id            Principle id — keywords joined by hyphens
-      """
-    And example:
-      """
-      rolex individual teach sean --id always-validate-input --principle "Feature: Always validate input
-        External data must be validated at system boundaries.
-
-        Scenario: API endpoints
-          Given data arrives from external clients
-          When the data crosses the trust boundary
-          Then validate type, format, and range before processing
-
-        Scenario: File uploads
-          Given a user uploads a file
-          When the file enters the system
-          Then verify file type, size, and content before storing"
+      use("!individual.teach", {
+        individual: "sean",
+        content: "Feature: Always validate input\n  ...",
+        id: "always-validate-input"
+      })
       """
 
   Scenario: train — inject a procedure (skill reference)
     Given an individual needs a skill it hasn't mastered through experience
-    When you call train with the individual id, procedure content, and a procedure id
+    When you call use with !individual.train
     Then a procedure is created directly under the individual
     And if a procedure with the same id already exists, it is replaced (upsert)
     And the procedure Feature description MUST contain the ResourceX locator for the skill
     And parameters are:
       """
-      rolex individual train <INDIVIDUAL> [OPTIONS]
-
-      ARGUMENTS:
-        INDIVIDUAL    Individual id (required)
-
-      OPTIONS:
-        --procedure     Gherkin Feature source for the procedure
-        -f, --file      Path to .feature file (alternative to --procedure)
-        --id            Procedure id — keywords joined by hyphens
-      """
-    And example:
-      """
-      rolex individual train sean --id skill-creator --procedure "Feature: Skill Creator
-        https://github.com/Deepractice/RoleX/tree/main/skills/skill-creator
-
-        Scenario: When to use this skill
-          Given I need to create a new skill for a role
-          When the skill requires directory structure and SKILL.md format
-          Then load this skill for detailed instructions"
+      use("!individual.train", {
+        individual: "sean",
+        content: "Feature: Skill Creator\n  https://github.com/Deepractice/DeepracticeX/tree/main/skills/skill-creator\n\n  Scenario: When to use\n    Given I need to create a skill\n    Then load this skill",
+        id: "skill-creator"
+      })
       """
 
   Scenario: teach vs realize — when to use which
@@ -189,10 +136,10 @@ Feature: Common Workflows
     When setting up a new role from scratch
     Then follow this sequence:
       """
-      1. born — create with persona and id
-      2. teach — inject foundational principles (repeat as needed)
-      3. train — inject skill procedures (repeat as needed)
-      4. activate — verify the individual's state
+      1. use("!individual.born", { id: "sean", content: "Feature: ..." })
+      2. use("!individual.teach", { individual: "sean", content: "...", id: "..." })  // repeat
+      3. use("!individual.train", { individual: "sean", content: "...", id: "..." })  // repeat
+      4. activate({ roleId: "sean" })   // verify the individual's state
       """
 
   Scenario: Transfer knowledge between individuals
@@ -210,5 +157,5 @@ Feature: Common Workflows
   Scenario: Remove knowledge
     Given an individual has outdated or incorrect knowledge
     When it should be removed entirely
-    Then use forget (via role system) with the node id
+    Then use forget with the node id
     And only instance nodes can be forgotten — prototype nodes are read-only
