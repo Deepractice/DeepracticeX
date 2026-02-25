@@ -1,0 +1,6 @@
+{
+  "name": "deepracticex-path",
+  "type": "skill",
+  "author": "deepractice",
+  "description": "Cross-runtime path utilities for Bun and Node.js. Use when you need __dirname, package root, or monorepo root."
+}

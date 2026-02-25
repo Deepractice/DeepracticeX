@@ -1,0 +1,6 @@
+{
+  "name": "deepracticex-logger",
+  "type": "skill",
+  "author": "deepractice",
+  "description": "Lazy-initialized logging with pluggable backends. Use when you need structured logging across modules."
+}

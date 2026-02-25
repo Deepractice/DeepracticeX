@@ -1,0 +1,6 @@
+{
+  "name": "deepracticex-drizzle",
+  "type": "skill",
+  "author": "deepractice",
+  "description": "Drizzle ORM driver for cross-runtime SQLite (Bun + Node.js 22+). Use when you need type-safe database queries."
+}
