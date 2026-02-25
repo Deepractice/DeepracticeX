@@ -1,5 +1,11 @@
 # @deepracticex/drizzle
 
+## 0.2.2
+
+### Patch Changes
+
+- ce2bfa1: Fix: republish with workspace:\* properly resolved to semver range.
+
 ## 0.2.1
 
 ### Patch Changes
