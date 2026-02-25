@@ -1,6 +1,6 @@
 ---
 name: position-management
-description: Manage positions — establish, charge, abolish, appoint, dismiss. Use when you need to create positions, assign duties, manage appointments, or abolish positions.
+description: Manage positions — establish, charge, require, abolish, appoint, dismiss. Use when you need to create positions, assign duties, declare required skills, manage appointments, or abolish positions.
 ---
 
 Feature: Position Lifecycle
@@ -42,6 +42,21 @@ Feature: Position Lifecycle
       })
       """
 
+  Scenario: require — declare a required skill for a position
+    Given a position requires individuals to have specific skills
+    When you call use with !position.require
+    Then a procedure node is created under the position
+    And individuals appointed to this position will automatically receive the skill
+    And upserts by id — if the same id exists, it replaces the old one
+    And parameters are:
+      """
+      use("!position.require", {
+        position: "architect",
+        content: "Feature: System Design\n  Scenario: When to apply\n    Given a new service is planned\n    Then design the architecture before coding",
+        id: "system-design"    // optional, enables upsert
+      })
+      """
+
   Scenario: abolish — abolish a position
     Given a position is no longer needed
     When you call use with !position.abolish
@@ -61,6 +76,8 @@ Feature: Appointment
     When you call use with !position.appoint
     Then an appointment link is created between the position and the individual
     And the individual inherits the position's duties on activation
+    And all required skills (from require) are automatically trained into the individual
+    And existing skills with the same id are replaced (upsert)
     And parameters are:
       """
       use("!position.appoint", { position: "architect", individual: "sean" })
@@ -77,13 +94,14 @@ Feature: Appointment
 
 Feature: Common Workflows
 
-  Scenario: Create a position with duties
+  Scenario: Create a position with duties and required skills
     Given you need a fully defined position
     Then follow this sequence:
       """
       1. use("!position.establish", { id: "architect", content: "Feature: Architect\n  ..." })
       2. use("!position.charge", { position: "architect", content: "Feature: Design systems\n  ...", id: "design-systems" })
       3. use("!position.charge", { position: "architect", content: "Feature: Review PRs\n  ...", id: "review-prs" })
+      4. use("!position.require", { position: "architect", content: "Feature: System Design\n  ...", id: "system-design" })
       """
 
   Scenario: Full organization setup with positions
@@ -93,10 +111,12 @@ Feature: Common Workflows
       1. use("!org.found", { id: "dp", content: "Feature: Deepractice" })
       2. use("!position.establish", { id: "architect", content: "Feature: Architect" })
       3. use("!position.charge", { position: "architect", content: "Feature: Design systems", id: "design-systems" })
-      4. use("!individual.born", { id: "sean", content: "Feature: Sean" })
-      5. use("!org.hire", { org: "dp", individual: "sean" })
-      6. use("!position.appoint", { position: "architect", individual: "sean" })
+      4. use("!position.require", { position: "architect", content: "Feature: System Design\n  ...", id: "system-design" })
+      5. use("!individual.born", { id: "sean", content: "Feature: Sean" })
+      6. use("!org.hire", { org: "dp", individual: "sean" })
+      7. use("!position.appoint", { position: "architect", individual: "sean" })
       """
+    And step 7 appoint will auto-train the required skill "system-design" into sean
 
   Scenario: Position is independent of organization
     Given position is a top-level entity, not a child of organization

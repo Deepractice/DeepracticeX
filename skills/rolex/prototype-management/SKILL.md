@@ -1,39 +1,26 @@
 ---
 name: prototype-management
-description: Manage prototypes — summon, banish, list. Use when you need to register role/organization templates from ResourceX sources, remove them, or inspect the registry.
+description: Manage prototypes — registry (summon, banish, list) and creation (born, teach, train, found, charter, establish, charge, require). Use when you need to register, create, or inspect prototypes.
 ---
 
-Feature: Prototype Lifecycle
-  Manage prototypes in the RoleX world.
-  A prototype is a pre-configured State template (identity, duties, procedures, etc.)
-  that merges with an individual's runtime state on activation.
+Feature: Prototype Registry
+  Register, unregister, and list prototypes.
+  A prototype is a pre-configured State template that merges with runtime state on activation.
 
   Scenario: summon — register a prototype from a source
-    Given you have a ResourceX source (local path or locator) containing a role/organization template
+    Given you have a ResourceX source (local path or locator) containing a prototype
     When you call use with !prototype.summon
     Then the source is ingested to extract its id
     And the id → source mapping is stored in the prototype registry
-    And on activate, the prototype state merges with the instance state
     And parameters are:
       """
-      use("!prototype.summon", {
-        source: "/path/to/DeepracticeX/roles/nuwa"
-      })
+      use("!prototype.summon", { source: "/path/to/roles/nuwa" })
       """
-
-  Scenario: summon — what happens on activate after summoning
-    Given a prototype "nuwa" has been summoned
-    When activate("nuwa") is called
-    Then if the individual does not exist in runtime, it is auto-born
-    And the prototype state provides the base (identity, procedures, etc.)
-    And the instance state provides the overlay (goals, plans, tasks, etc.)
-    And the merged state is returned
 
   Scenario: banish — unregister a prototype
     Given a prototype is no longer needed
     When you call use with !prototype.banish
     Then the id is removed from the prototype registry
-    And future activations will no longer merge this prototype
     And parameters are:
       """
       use("!prototype.banish", { id: "nuwa" })
@@ -43,49 +30,162 @@ Feature: Prototype Lifecycle
     Given you want to see what prototypes are available
     When you call use with !prototype.list
     Then the id → source mapping of all registered prototypes is returned
+
+Feature: Individual Prototype Creation
+  Create individual prototype directories on the filesystem.
+
+  Scenario: born — create an individual prototype
+    Given you want to create a new role prototype
+    When you call use with !prototype.born
+    Then a directory is created with individual.json manifest
     And parameters are:
       """
-      use("!prototype.list")
+      use("!prototype.born", {
+        dir: "/path/to/my-role",
+        content: "Feature: My Role\n  A backend engineer.",
+        id: "my-role",
+        alias: ["MyRole"]    // optional
+      })
+      """
+
+  Scenario: teach — add a principle to a prototype
+    Given an individual prototype exists
+    When you call use with !prototype.teach
+    Then a principle node is added to the manifest and feature file is written
+    And parameters are:
+      """
+      use("!prototype.teach", {
+        dir: "/path/to/my-role",
+        content: "Feature: Always test first\n  Tests before code.",
+        id: "tdd-first"
+      })
+      """
+
+  Scenario: train — add a procedure to a prototype
+    Given an individual prototype exists
+    When you call use with !prototype.train
+    Then a procedure node is added to the manifest and feature file is written
+    And parameters are:
+      """
+      use("!prototype.train", {
+        dir: "/path/to/my-role",
+        content: "Feature: Code Review\n  https://example.com/skills/code-review",
+        id: "code-review"
+      })
+      """
+
+Feature: Organization Prototype Creation
+  Create organization prototype directories on the filesystem.
+
+  Scenario: found — create an organization prototype
+    Given you want to create a new organization prototype
+    When you call use with !prototype.found
+    Then a directory is created with organization.json manifest
+    And parameters are:
+      """
+      use("!prototype.found", {
+        dir: "/path/to/my-org",
+        content: "Feature: Deepractice\n  AI agent framework company.",
+        id: "deepractice",
+        alias: ["DP"]    // optional
+      })
+      """
+
+  Scenario: charter — add a charter to an organization prototype
+    Given an organization prototype exists
+    When you call use with !prototype.charter
+    Then a charter node is added to the manifest
+    And parameters are:
+      """
+      use("!prototype.charter", {
+        dir: "/path/to/my-org",
+        content: "Feature: Build role-based AI\n  Scenario: Mission\n    Given AI needs identity",
+        id: "mission"    // optional, defaults to "charter"
+      })
+      """
+
+  Scenario: establish — add a position to an organization prototype
+    Given an organization prototype exists
+    When you call use with !prototype.establish
+    Then a position node is added to the manifest with empty children
+    And parameters are:
+      """
+      use("!prototype.establish", {
+        dir: "/path/to/my-org",
+        content: "Feature: Backend Architect\n  System design lead.",
+        id: "architect"
+      })
+      """
+
+  Scenario: charge — add a duty to a position in an organization prototype
+    Given a position exists in the organization prototype
+    When you call use with !prototype.charge
+    Then a duty node is added under the position in the manifest
+    And parameters are:
+      """
+      use("!prototype.charge", {
+        dir: "/path/to/my-org",
+        position: "architect",
+        content: "Feature: Design APIs\n  Scenario: New service\n    Given a service is needed\n    Then design API first",
+        id: "design-apis"
+      })
+      """
+
+  Scenario: require — add a required skill to a position in an organization prototype
+    Given a position exists in the organization prototype
+    When you call use with !prototype.require
+    Then a procedure node is added under the position in the manifest
+    And when an individual is appointed to this position at runtime, the skill is auto-trained
+    And parameters are:
+      """
+      use("!prototype.require", {
+        dir: "/path/to/my-org",
+        position: "architect",
+        content: "Feature: System Design\n  Scenario: When to apply\n    Given architecture decisions needed\n    Then apply systematic design",
+        id: "system-design"
+      })
       """
 
 Feature: Prototype Binding Rules
-  How prototypes bind to runtime individuals.
+  How prototypes bind to runtime state.
 
   Scenario: Binding is by id
     Given a prototype has id "nuwa" (extracted from its manifest)
-    And an individual is born with id "nuwa"
     Then on activate, the prototype state is resolved by the individual's id
-    And this means: one prototype binds to exactly one individual
+    And one prototype binds to exactly one individual
 
   Scenario: Auto-born on activate
-    Given a prototype "nuwa" is registered but no runtime individual exists
-    When activate("nuwa") is called
-    Then the individual is automatically born into the runtime
+    Given a prototype is registered but no runtime individual exists
+    When activate is called
+    Then the individual is automatically born
     And the prototype state merges with the fresh instance
-    And the caller does not need to call born separately
 
-  Scenario: No prototype is also valid
-    Given an individual "sean" exists in runtime but has no registered prototype
-    When activate("sean") is called
-    Then the activation proceeds normally with instance state only
-    And no merge happens — the individual is fully instance-driven
+  Scenario: Prototype nodes are read-only
+    Given a prototype is activated and merged with an instance
+    Then prototype-origin nodes cannot be modified or forgotten
+    And only instance-origin nodes are mutable
 
 Feature: Common Workflows
 
-  Scenario: First-time setup — summon and activate
-    Given a new role template is available at a ResourceX source
+  Scenario: Create and register an individual prototype
+    Given you want a reusable role template
     Then follow this sequence:
       """
-      1. use("!prototype.summon", { source: "/path/to/roles/nuwa" })
-      2. activate("nuwa")
+      1. use("!prototype.born", { dir: "./roles/dev", id: "dev", content: "Feature: Developer" })
+      2. use("!prototype.teach", { dir: "./roles/dev", content: "Feature: TDD\n  ...", id: "tdd" })
+      3. use("!prototype.train", { dir: "./roles/dev", content: "Feature: Review\n  ...", id: "review" })
+      4. use("!prototype.summon", { source: "./roles/dev" })
+      5. activate("dev")
       """
-    And step 1 registers the prototype
-    And step 2 auto-borns the individual and merges the prototype
 
-  Scenario: Inspect and clean up prototypes
-    Given you want to audit the prototype registry
-    Then:
+  Scenario: Create and register an organization prototype
+    Given you want a reusable organization template
+    Then follow this sequence:
       """
-      1. use("!prototype.list")           — see all registered prototypes
-      2. use("!prototype.banish", { id: "old-role" })  — remove stale entries
+      1. use("!prototype.found", { dir: "./orgs/dp", id: "dp", content: "Feature: Deepractice" })
+      2. use("!prototype.charter", { dir: "./orgs/dp", content: "Feature: Mission\n  ...", id: "mission" })
+      3. use("!prototype.establish", { dir: "./orgs/dp", content: "Feature: Architect", id: "architect" })
+      4. use("!prototype.charge", { dir: "./orgs/dp", position: "architect", content: "Feature: Design\n  ...", id: "design" })
+      5. use("!prototype.require", { dir: "./orgs/dp", position: "architect", content: "Feature: Skill\n  ...", id: "skill" })
+      6. use("!prototype.summon", { source: "./orgs/dp" })
       """
