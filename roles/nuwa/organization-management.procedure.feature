@@ -1,5 +1,5 @@
 Feature: Organization Management
-  organization-management:0.1.0
+  organization-management
 
   Scenario: When to use this skill
     Given I need to manage organizations (found, charter, dissolve)

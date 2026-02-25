@@ -1,5 +1,5 @@
 Feature: Skill Creator
-  skill-creator:0.1.0
+  skill-creator
 
   Scenario: When to use this skill
     Given I need to create a new skill for a role

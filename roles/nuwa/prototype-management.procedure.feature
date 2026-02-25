@@ -1,5 +1,5 @@
 Feature: Prototype Management
-  prototype-management:0.1.0
+  prototype-management
 
   Scenario: When to use this skill
     Given I need to manage prototypes (summon, banish, list)

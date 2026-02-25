@@ -1,5 +1,5 @@
 Feature: Prototype Authoring
-  prototype-authoring:0.1.0
+  prototype-authoring
 
   Scenario: When to use this skill
     Given I need to create a new role or organization prototype from scratch

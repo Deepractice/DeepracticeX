@@ -1,5 +1,5 @@
 Feature: Individual Management
-  individual-management:0.1.0
+  individual-management
 
   Scenario: When to use this skill
     Given I need to manage individual lifecycle (born, retire, die, rehire)

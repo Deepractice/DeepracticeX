@@ -1,5 +1,5 @@
 Feature: Resource Management
-  resource-management:0.2.0
+  resource-management
 
   Scenario: When to use this skill
     Given I need to manage ResourceX resources (search, add, remove, push, pull)

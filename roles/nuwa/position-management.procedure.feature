@@ -1,5 +1,5 @@
 Feature: Position Management
-  position-management:0.1.0
+  position-management
 
   Scenario: When to use this skill
     Given I need to manage positions (establish, charge, abolish)

@@ -1,0 +1,101 @@
+name: Changesets
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/**'
+      - '.changeset/**'
+      - 'package.json'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  TURBO_CACHE_DIR: .turbo
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js (for npm publish)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Cache Turbo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-release-${{ runner.os }}-${{ hashFiles('**/bun.lock') }}-${{ github.sha }}
+          restore-keys: |
+            turbo-release-${{ runner.os }}-${{ hashFiles('**/bun.lock') }}-
+            turbo-release-${{ runner.os }}-
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build Packages
+        run: bun run build
+
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: bun run version
+          publish: bun run release
+          title: "chore: version packages"
+          commit: "chore: version packages"
+          createGithubReleases: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.ORG_NPM_TOKEN }}
+
+      - name: Create GitHub Releases (per package)
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          PACKAGES='${{ steps.changesets.outputs.publishedPackages }}'
+
+          echo "$PACKAGES" | jq -c '.[]' | while read -r pkg; do
+            NAME=$(echo "$pkg" | jq -r '.name')
+            VERSION=$(echo "$pkg" | jq -r '.version')
+            SHORT=$(echo "$NAME" | sed 's/@deepracticex\///')
+            TAG="${SHORT}-v${VERSION}"
+
+            if git rev-parse "$TAG" >/dev/null 2>&1; then
+              echo "Tag $TAG already exists, skipping"
+              continue
+            fi
+
+            git tag "$TAG"
+            git push origin "$TAG"
+
+            gh release create "$TAG" \
+              --title "${NAME}@${VERSION}" \
+              --notes "Published ${NAME}@${VERSION}"
+
+            echo "Created release $TAG"
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          echo "## Packages Published" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | "- `\(.name)@\(.version)`"' >> $GITHUB_STEP_SUMMARY
