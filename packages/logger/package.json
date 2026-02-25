@@ -1,6 +1,6 @@
 {
   "name": "@deepracticex/logger",
-  "version": "0.2.0",
+  "version": "1.2.0",
   "description": "Lazy-initialized logging with pluggable backends",
   "type": "module",
   "main": "./dist/index.cjs",
