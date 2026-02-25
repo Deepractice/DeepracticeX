@@ -1,5 +1,11 @@
 # @deepracticex/drizzle
 
+## 0.2.1
+
+### Patch Changes
+
+- c1249c2: Fix workspace:\* dependency not resolved during initial publish.
+
 ## 0.2.0
 
 ### Minor Changes
