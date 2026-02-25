@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'packages/**'
-      - '.changeset/**'
-      - 'package.json'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -51,6 +47,22 @@ jobs:
 
       - name: Build Packages
         run: bun run build
+
+      - name: Replace workspace protocol
+        run: |
+          for pkg_json in packages/*/package.json; do
+            PKG_NAME=$(jq -r '.name' "$pkg_json")
+            PKG_VERSION=$(jq -r '.version' "$pkg_json")
+            echo "Resolving $PKG_NAME -> ^${PKG_VERSION}"
+            find packages -name "package.json" -not -path "*/node_modules/*" -exec \
+              sed -i "s|\"${PKG_NAME}\": \"workspace:\\*\"|\"${PKG_NAME}\": \"^${PKG_VERSION}\"|g" {} \;
+          done
+
+          if grep -r '"workspace:' packages/ --include="package.json" 2>/dev/null | grep -v node_modules; then
+            echo "ERROR: workspace: protocol still found!"
+            exit 1
+          fi
+          echo "All workspace:* replaced"
 
       - name: Create Release Pull Request or Publish
         id: changesets
