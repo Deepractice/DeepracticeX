@@ -1,5 +1,11 @@
 # @deepracticex/drizzle
 
+## 0.2.3
+
+### Patch Changes
+
+- 358f030: Fix: workspace:\* now properly resolved to semver range during publish.
+
 ## 0.2.2
 
 ### Patch Changes
