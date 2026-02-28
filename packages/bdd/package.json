@@ -1,6 +1,6 @@
 {
   "name": "@deepracticex/bdd",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Cucumber-compatible BDD framework for Bun",
   "type": "module",
   "main": "./dist/index.cjs",
