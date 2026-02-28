@@ -1,6 +1,0 @@
-{
-  "name": "deepracticex-sqlite",
-  "type": "skill",
-  "author": "deepractice",
-  "description": "Unified SQLite abstraction for Bun and Node.js 22+. Use when you need cross-runtime SQLite database access."
-}

@@ -1,6 +1,0 @@
-{
-  "name": "deepracticex-id",
-  "type": "skill",
-  "author": "deepractice",
-  "description": "ID generation utilities. Use when you need unique timestamped IDs with prefixes."
-}

@@ -76,7 +76,7 @@ jobs:
 
       - name: Check Build Artifacts
         run: |
-          for pkg in sqlite logger path id drizzle; do
+          for pkg in sqlite logger path id drizzle bdd; do
             if [ -d "packages/$pkg/dist" ]; then
               echo "packages/$pkg built successfully"
             else

@@ -1,0 +1,33 @@
+{
+  "name": "@deepracticex/bdd",
+  "version": "0.1.0",
+  "description": "Cucumber-compatible BDD framework for Bun",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@cucumber/gherkin": "^31.0.0",
+    "@cucumber/messages": "^27.2.0",
+    "@cucumber/cucumber-expressions": "^18.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
