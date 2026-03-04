@@ -26,3 +26,7 @@ export { setDefaultTimeout, defineParameterType } from "./config";
 // Runner
 export { loadFeature } from "./runner";
 export type { LoadFeatureOptions } from "./runner";
+
+// Configure — auto-scan features and steps
+export { configure } from "./configure";
+export type { BDDConfig } from "./configure";
