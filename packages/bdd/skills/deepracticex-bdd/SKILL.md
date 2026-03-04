@@ -10,17 +10,29 @@ Cucumber-compatible BDD framework running natively on Bun. Same API as @cucumber
 ## How It Works
 
 ```typescript
-// bdd/run.test.ts — the test entry point
-import "./steps/auth.steps";
-import "./support/world";
+// bdd/run.test.ts — write once, never change
+import { configure } from "@deepracticex/bdd";
+
+await configure({
+  features: ["bdd/features/**/*.feature", "bdd/journeys/**/*.feature"],
+  steps: ["bdd/support/**/*.ts", "bdd/steps/**/*.ts"],
+  tags: "not @pending",  // optional: global tag filter
+  timeout: 60_000,       // optional: default timeout in ms
+});
+```
+
+`configure()` auto-scans feature files and step definitions via glob patterns, then generates `describe`/`test` blocks that Bun's test runner executes natively. Add new `.feature` and `.steps.ts` files — they get picked up automatically.
+
+### Manual loadFeature (escape hatch)
+
+```typescript
 import { loadFeature } from "@deepracticex/bdd";
 
 loadFeature("bdd/features/oauth.feature");
-loadFeature("bdd/features/session.feature");
-loadFeature("bdd/journeys/login.feature", { tags: "not @pending" });
+loadFeature("bdd/features/session.feature", { tags: "not @pending" });
 ```
 
-`loadFeature()` parses the .feature file and generates `describe`/`test` blocks that Bun's test runner executes natively.
+Use `loadFeature()` when you need per-feature control over tags or explicit ordering.
 
 ## Running Tests
 
@@ -45,11 +57,11 @@ service/
 │   │   ├── world.ts       # Custom World + setWorldConstructor
 │   │   ├── container.ts   # DI container setup
 │   │   └── database.ts    # Test DB initialization
-│   └── run.test.ts        # Entry: imports steps/support, calls loadFeature()
+│   └── run.test.ts        # Entry: configure() with glob patterns
 └── package.json           # "test:bdd": "bun test bdd/"
 ```
 
-The `run.test.ts` file is the bridge — it imports step definitions and support, then calls `loadFeature()` for each .feature file.
+The `run.test.ts` file calls `configure()` once — it auto-scans steps, support, and feature files via glob patterns. No manual imports or `loadFeature()` calls needed.
 
 ## API Exports
 
@@ -66,14 +78,16 @@ import {
   setDefaultTimeout, defineParameterType,
   // Data
   DataTable,
-  // Runner
+  // Auto-scan runner
+  configure,
+  // Manual runner (escape hatch)
   loadFeature,
   // Chinese aliases
   假设, 当, 那么, 之前, 之后,
 } from "@deepracticex/bdd";
 ```
 
-The API is identical to `@cucumber/cucumber`. Only additions: `loadFeature()` and Chinese aliases.
+The API is identical to `@cucumber/cucumber`. Additions: `configure()`, `loadFeature()`, and Chinese aliases.
 
 ## Feature Files
 
@@ -237,8 +251,11 @@ Execution order: BeforeAll → (Before → BeforeStep → Step → AfterStep →
 ### Timeout
 
 ```typescript
-import { setDefaultTimeout } from "@deepracticex/bdd";
+// Via configure
+await configure({ features: "...", timeout: 10000 });
 
+// Or manually
+import { setDefaultTimeout } from "@deepracticex/bdd";
 setDefaultTimeout(10000); // 10 seconds (default: 5000)
 ```
 
@@ -285,16 +302,15 @@ setWorldConstructor(AccountWorld);
 ## Tag Filtering
 
 ```typescript
-// Include only @smoke
+// Global filter via configure — applies to all scanned features
+await configure({
+  features: "bdd/features/**/*.feature",
+  steps: "bdd/steps/**/*.ts",
+  tags: "not @pending and not @slow",
+});
+
+// Per-feature filter via loadFeature
 loadFeature("bdd/features/auth.feature", { tags: "@smoke" });
-
-// Exclude @pending and @slow
-loadFeature("bdd/features/auth.feature", { tags: "not @pending and not @slow" });
-
-// Combine: must be @auth AND NOT @pending
-loadFeature("bdd/features/auth.feature", { tags: "@auth and not @pending" });
-
-// Parentheses
 loadFeature("bdd/features/auth.feature", { tags: "(@smoke or @critical) and not @skip" });
 ```
 
