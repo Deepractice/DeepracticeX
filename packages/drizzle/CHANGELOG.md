@@ -1,5 +1,11 @@
 # @deepracticex/drizzle
 
+## 0.3.1
+
+### Patch Changes
+
+- ae4648e: Fix: include migrate() in published build (was missing from 0.3.0 due to CI ordering).
+
 ## 0.3.0
 
 ### Minor Changes
