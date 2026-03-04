@@ -1,5 +1,11 @@
 # @deepracticex/bdd
 
+## 0.3.0
+
+### Minor Changes
+
+- f37f681: feat: add configure() for auto-scanning features and steps via glob patterns
+
 ## 0.2.0
 
 ### Minor Changes
