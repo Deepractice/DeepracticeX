@@ -1,5 +1,11 @@
 # @deepracticex/drizzle
 
+## 0.3.0
+
+### Minor Changes
+
+- c561042: Add `migrate()` function for running drizzle-kit generated SQL migrations with CommonXDatabase.
+
 ## 0.2.3
 
 ### Patch Changes
