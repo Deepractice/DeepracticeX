@@ -1,7 +1,7 @@
 {
-  "name": "@deepracticex/rpc",
+  "name": "@deepracticex/error",
   "version": "1.0.0",
-  "description": "Unified RPC protocol types, error classes, and helpers for Deepractice open source projects",
+  "description": "Unified error codes, domain error classes, and error mappings for Deepractice open source projects",
   "type": "module",
   "main": "./src/index.ts",
   "module": "./dist/index.js",
@@ -21,9 +21,6 @@
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
-  },
-  "dependencies": {
-    "@deepracticex/error": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

@@ -1,7 +1,7 @@
 {
-  "name": "@deepracticex/rpc",
+  "name": "@deepracticex/service",
   "version": "1.0.0",
-  "description": "Unified RPC protocol types, error classes, and helpers for Deepractice open source projects",
+  "description": "Platform-agnostic service framework — DDD, DI, RPC, and repository patterns",
   "type": "module",
   "main": "./src/index.ts",
   "module": "./dist/index.js",
@@ -23,7 +23,11 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@deepracticex/error": "workspace:*"
+    "@deepracticex/error": "workspace:*",
+    "@deepracticex/rpc": "workspace:*",
+    "drizzle-orm": "^0.38.0",
+    "reflect-metadata": "^0.2.0",
+    "tsyringe": "^4.8.0"
   },
   "publishConfig": {
     "access": "public",
