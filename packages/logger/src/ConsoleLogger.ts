@@ -132,6 +132,7 @@ export class ConsoleLogger implements Logger {
   }
 
   private isNodeEnvironment(): boolean {
-    return typeof process !== "undefined" && process.versions?.node !== undefined;
+    const g = globalThis as Record<string, unknown>;
+    return g.process != null && (g.process as Record<string, unknown>).versions != null;
   }
 }
