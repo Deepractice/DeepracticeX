@@ -102,6 +102,45 @@ export class RpcHandlerRegistry<TContext = unknown> {
   }
 
   /**
+   * Mount another registry's methods under a prefix.
+   * e.g. mount("runtime", agentxRegistry) registers "runtime.image.create" etc.
+   *
+   * The mounted handlers receive the same TContext as this registry.
+   * Use a handler adapter if the source registry has a different context type.
+   */
+  mount<TOther>(
+    prefix: string,
+    source: RpcHandlerRegistry<TOther>,
+    adapter: (ctx: TContext) => TOther,
+  ): this {
+    for (const [name, def] of (source as any).definitions as Map<string, RpcMethodDefinition<TOther>>) {
+      this.definitions.set(`${prefix}.${name}`, {
+        handler: async (ctx, params) => def.handler(adapter(ctx), params),
+        description: def.description,
+      });
+    }
+    return this;
+  }
+
+  /**
+   * Register all methods from an RpcProtocol with a handler factory.
+   * Each method is registered as "{protocol.namespace}.{method.name}".
+   */
+  registerProtocol(
+    protocol: RpcProtocol,
+    handlerFactory: (methodName: string) => RpcHandler<TContext>,
+  ): this {
+    for (const method of protocol.methods) {
+      const prefixed = `${protocol.namespace}.${method.name}`;
+      this.definitions.set(prefixed, {
+        handler: handlerFactory(method.name),
+        description: method.description,
+      });
+    }
+    return this;
+  }
+
+  /**
    * Handle an RPC request — dispatch to registered handler.
    */
   async handle(ctx: TContext, method: string, params: unknown): Promise<RpcResponse> {
