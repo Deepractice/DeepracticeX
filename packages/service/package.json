@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@deepracticex/error": "workspace:*",
+    "@deepracticex/logger": "workspace:*",
     "@deepracticex/rpc": "workspace:*",
     "drizzle-orm": "^0.38.0",
     "reflect-metadata": "^0.2.0",

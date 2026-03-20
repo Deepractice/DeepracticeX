@@ -5,6 +5,8 @@
  * Defines service-specific types: AuthContext, RpcContext, handler signatures.
  */
 
+import type { Logger } from "@deepracticex/logger";
+
 // Re-export from @deepracticex/error — single source of truth
 export {
   ErrorCodes,
@@ -39,6 +41,8 @@ export interface RpcContext {
   resolve<T>(token: string): T;
   /** Raw environment variables (platform-injected). */
   env: Record<string, unknown>;
+  /** Logger with request context (service, method, requestId, tenantId). */
+  logger: Logger;
 }
 
 // ==================== Method Handler ====================
